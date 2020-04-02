@@ -1,0 +1,43 @@
+import {
+  Store,
+} from 'redux';
+import actions from 'store/video/actions';
+import socketio from 'socket.io-client';
+
+let store: Store;
+let socketConnected = false;
+
+const connectStore = (initedStore: Store) => {
+  store = initedStore;
+  if (socketConnected) {
+    store.dispatch(actions.setIsSocketReady(true));
+  }
+};
+
+
+const socket = socketio.connect(process.env.REACT_APP_SOCKET_HOST as string);
+
+socket.on('connect', () => {
+  if (store) {
+    store.dispatch(actions.setIsSocketReady(true));
+  }
+  socketConnected = true;
+});
+
+socket.on('message', (data: any) => {
+  if (store) {
+    store.dispatch(actions.receiveMessage(data));
+  }
+});
+
+export const sendMessage = (body: any) => {
+  socket.emit('message', {
+    type: 'message',
+    body,
+  });
+};
+
+export default {
+  connectStore,
+};
+

@@ -1,0 +1,19 @@
+# node modules
+node_modules
+
+# mac
+.DS_Store
+
+# vi
+*.swp
+
+# serverless
+.serverless
+
+# webpack
+.webpackCache
+
+# build
+dist
+
+.env.*
