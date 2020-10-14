@@ -16,6 +16,7 @@ import Header from 'components/Header';
 import Alert from 'components/Alert';
 import Main from 'pages/Main';
 import routes from 'constants/routes';
+import Sidebar from 'components/Sidebar';
 
 import 'vendor';
 
@@ -34,10 +35,11 @@ const App: React.FC = () => {
   const classes = useStyles();
 
   return (
-    <>
+    <div className={classes.root}>
       <CssBaseline />
       <Router>
         <Header />
+        <Sidebar />
         <main className={classes.content}>
           <div className={classes.toolbar} />
           <Switch>
@@ -62,7 +64,7 @@ const App: React.FC = () => {
         </main>
       </Router>
       <Alert />
-    </>
+    </div>
   );
 };
 

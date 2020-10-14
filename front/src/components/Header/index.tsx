@@ -45,9 +45,7 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
 
 const selector = ({
   layout: {
-    drawer: {
-      isOpen,
-    },
+    drawer: isOpen,
   },
 }: RootState) => isOpen;
 

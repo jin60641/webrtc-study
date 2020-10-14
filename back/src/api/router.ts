@@ -1,9 +1,11 @@
 import Router from 'koa-router';
 
-import subRouter from './sub';
+import userRouter from './user';
+import postRouter from './post';
 
 const router = new Router();
 
-router.use(subRouter.routes());
+router.use(userRouter.routes());
+router.use(postRouter.routes());
 
 export default router;

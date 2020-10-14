@@ -19,6 +19,7 @@ interface Route extends RouteProps {
 const routes: Route[] = [{
   key: 'call',
   component: Call,
+  RouteComponent: PrivateRoute,
 }, {
   key: 'signin',
   component: SignIn,

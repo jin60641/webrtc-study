@@ -1,6 +1,6 @@
 export interface LayoutState {
-  drawer: DrawerOption,
   alert: AlertOption,
+  drawer: boolean,
 }
 
 export enum Actions {
@@ -14,14 +14,8 @@ export const initialState: LayoutState = {
     message: '',
     type: null,
   },
-  drawer: {
-    isOpen: false,
-  },
+  drawer: true,
 };
-
-export interface DrawerOption {
-  isOpen: boolean,
-}
 
 export interface AlertOption {
   type: AlertType | null,

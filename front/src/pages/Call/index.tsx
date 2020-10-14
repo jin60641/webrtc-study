@@ -16,8 +16,7 @@ import My from './My';
 import PeerVideo from './PeerVideo';
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
-  toolbar: theme.mixins.toolbar,
-  main: {},
+  root: {},
 }));
 
 const selector = (({
@@ -28,7 +27,7 @@ const selector = (({
   peers,
 }));
 
-const Main: React.FC = () => {
+const Call: React.FC = () => {
   const classes = useStyles();
   const {
     peers,
@@ -36,8 +35,7 @@ const Main: React.FC = () => {
   const vidRef = useRef<HTMLVideoElement>(null);
 
   return (
-    <div className={classes.main}>
-      <div className={classes.toolbar} />
+    <div className={classes.root}>
       <My vidRef={vidRef} />
       {Object.keys(peers).map((connectionId) => (
         <PeerVideo
@@ -50,4 +48,4 @@ const Main: React.FC = () => {
   );
 };
 
-export default Main;
+export default Call;

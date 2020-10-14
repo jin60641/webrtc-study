@@ -3,11 +3,11 @@ import {
 } from 'typesafe-actions';
 
 import {
-  setToken,
-} from '../utils';
-import {
   initialState,
 } from './types';
+import {
+  handleSignIn,
+} from '../utils';
 import userActions from './actions';
 
 const user = createReducer(initialState)
@@ -15,7 +15,13 @@ const user = createReducer(initialState)
   .handleAction(userActions.fetchSignIn.success, (state, {
     payload,
   }) => {
-    setToken(payload.token);
+    handleSignIn(payload.token);
+    return payload;
+  })
+  .handleAction(userActions.fetchSignUp.success, (state, {
+    payload,
+  }) => {
+    handleSignIn(payload.token);
     return payload;
   });
 

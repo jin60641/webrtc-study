@@ -2,11 +2,13 @@ import {
   combineEpics,
 } from 'redux-observable';
 
-import userEpic from './user/epic';
-import videoEpic from './video/epic';
+import userEpic from './user/epics';
+import postEpic from './post/epics';
+import videoEpic from './video/epics';
 
 const epics = [
   userEpic,
+  postEpic,
   videoEpic,
 ];
 

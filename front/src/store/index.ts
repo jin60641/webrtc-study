@@ -18,7 +18,8 @@ import {
 import rootReducer from './reducer';
 import rootEpic from './epic';
 import {
-  setToken,
+  setHeader,
+  handleSignIn,
 } from './utils';
 
 const persistConfig = {
@@ -30,15 +31,16 @@ const persistConfig = {
 const persistHandler = (store: Store<RootState>) => () => {
   const state = store.getState();
   if (state.user.token) {
-    setToken(state.user.token);
+    handleSignIn(state.user.token);
   }
+  setHeader('x-user-locale', state.locale);
 };
 
 const pReducer = persistReducer(persistConfig, rootReducer);
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-const loggerMiddleware = createLogger({ collapsed: true });
+const loggerMiddleware = createLogger();
 const epicMiddleware = createEpicMiddleware<RootAction, RootAction, RootState>();
 
 

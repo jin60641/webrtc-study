@@ -2,6 +2,7 @@ import axios from 'axios';
 import {
   from,
 } from 'rxjs';
+import socket from 'utils/socket';
 import {
   map,
   exhaustMap,
@@ -13,6 +14,10 @@ import {
   isActionOf,
 } from 'typesafe-actions';
 
+import layoutActions from './layout/actions';
+import {
+  AlertType,
+} from './layout/types';
 import {
   Epic,
 } from './types';
@@ -21,27 +26,39 @@ axios.defaults.baseURL = process.env.REACT_APP_API_HOST;
 
 export const request = axios;
 
-export const setToken = (token: string) => {
+export const setHeader = (name: string, value: string) => {
   request.defaults.headers.common = {
-    Authorization: `token ${token}`,
+    ...request.defaults.headers.common,
+    [name]: value,
   };
 };
 
+export const handleSignIn = (token: string) => {
+  setHeader('authorization', `Bearer ${token}`);
+  // socket.init(token);
+};
+
 export const createAsyncEpic = (
-  asyncAction: any,
+  asyncActionCreator: any,
   asyncApi: (payload: any, meta?: any) => Promise<any>,
 ) => {
   const asyncEpic: Epic = (action$) => action$.pipe(
-    filter(isActionOf(asyncAction.request)),
+    filter(isActionOf(asyncActionCreator.request)),
     exhaustMap((action) => from(asyncApi(action.payload, action.meta)).pipe(
-      map((response) => asyncAction.success(response, action.meta)),
+      map((response) => asyncActionCreator.success(response, action.meta)),
       takeUntil(action$.pipe(
-        filter(isActionOf(asyncAction.cancel)),
+        filter((cancelAction) => (asyncActionCreator.cancel
+          ? isActionOf(asyncActionCreator.cancel)(cancelAction)
+          : false
+        )),
       )),
-      catchError((e) => {
-        console.error(e);
-        return [asyncAction.failure(e)];
-      }),
+      catchError((e) => [
+        asyncActionCreator.failure(e),
+        layoutActions.makeAlert({
+          message: e.response.data,
+          type: AlertType.error,
+        }),
+      ]),
     )),
   );
 
