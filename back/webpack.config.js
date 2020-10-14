@@ -1,15 +1,18 @@
 const path = require('path');
 const nodeExternals = require('webpack-node-externals');
 const CircularDependencyPlugin = require('circular-dependency-plugin')
-const slsw = require('serverless-webpack');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const NodemonPlugin = require('nodemon-webpack-plugin');
+const dotenv = require('dotenv-webpack');
 
-const isLocal = slsw.lib.webpack.isLocal;
+const isLocal = process.env.NODE_ENV === 'local';
+
+console.log(process.env.NODE_ENV);
 
 module.exports = {
   mode: isLocal ? 'development' : 'production',
   externals: [nodeExternals()],
-  entry: slsw.lib.entries,
+  entry: path.resolve(__dirname, 'src', 'app'),
   devtool: 'source-map',
   output: {
     libraryTarget: 'commonjs2',
@@ -17,6 +20,9 @@ module.exports = {
     filename: '[name].js',
   },
   target: 'node',
+  node: {
+    __dirname: true,
+  },
   module: {
     rules: [
       {
@@ -44,6 +50,9 @@ module.exports = {
     extensions: ['.tsx', '.ts', '.js'],
   },
   plugins: [
+    new dotenv({
+      path: path.join(__dirname, `.env.${process.env.NODE_ENV}`),
+    }),
     new ForkTsCheckerWebpackPlugin(),
     new CircularDependencyPlugin({
       exclude: /node_modules/,
@@ -52,5 +61,6 @@ module.exports = {
       allowAsyncCycles: false,
       cwd: process.cwd(),
     }),
+    new NodemonPlugin(),
   ],
 };

@@ -80,7 +80,7 @@ const Header: React.FC = () => {
           <Menu />
         </IconButton>
         <Typography variant='h6' noWrap>
-          Webview Backend Admin
+          WEBRTC SAMPLE
         </Typography>
       </Toolbar>
     </AppBar>

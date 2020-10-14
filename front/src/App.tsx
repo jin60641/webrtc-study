@@ -11,27 +11,13 @@ import {
   Route,
   Redirect,
 } from 'react-router-dom';
-import {
-  useSelector,
-} from 'react-redux';
-import {
-  RootState,
-} from 'store/types';
+
 import Header from 'components/Header';
-import Sidebar from 'components/Sidebar';
 import Alert from 'components/Alert';
-import Login from 'pages/Login';
 import Main from 'pages/Main';
+import routes from 'constants/routes';
 
 import 'vendor';
-
-const selector = ({
-  user: {
-    token,
-  },
-}: RootState) => ({
-  hasToken: !!token,
-});
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
   root: {
@@ -41,32 +27,39 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     flexGrow: 1,
     padding: theme.spacing(3),
   },
+  toolbar: theme.mixins.toolbar,
 }));
 
 const App: React.FC = () => {
   const classes = useStyles();
-  const {
-    hasToken,
-  } = useSelector(selector);
 
   return (
     <>
       <CssBaseline />
       <Router>
-        {!hasToken ? (
-          <>
-            <Header />
-            <Sidebar />
-            <main className={classes.content}>
-              <Switch>
-                <Route path='/' exact component={Main} />
-                <Redirect to='/' />
-              </Switch>
-            </main>
-          </>
-        ) : (
-          <Login />
-        )}
+        <Header />
+        <main className={classes.content}>
+          <div className={classes.toolbar} />
+          <Switch>
+            <Route
+              exact
+              path='/'
+              component={Main}
+            />
+            {routes.map(({
+              key,
+              RouteComponent = Route,
+              ...props
+            }) => (
+              <RouteComponent
+                key={`app-route-${key}`}
+                path={`/${key}`}
+                {...props}
+              />
+            ))}
+            <Redirect to='/' />
+          </Switch>
+        </main>
       </Router>
       <Alert />
     </>

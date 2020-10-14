@@ -1,8 +1,10 @@
 import mongoose from 'mongoose';
 
-import Session from './Session';
+import User from './user';
+import Post from './post';
+import Session from './session';
 
-const uri = process.env.MONGO_URI as string;
+const uri = process.env.MONGO_URI!;
 
 mongoose.connect(uri, {
   useCreateIndex: true,
@@ -11,6 +13,8 @@ mongoose.connect(uri, {
 });
 
 const db = {
+  User,
+  Post,
   Session,
 };
 

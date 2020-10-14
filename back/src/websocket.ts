@@ -1,63 +1,32 @@
-import { APIGatewayProxyHandler } from 'aws-lambda';
-import * as AWS from 'aws-sdk';
 import db from './models';
+import socketio from 'socket.io';
+import {
+  Server,
+} from 'http';
 
-const apiGateway = new AWS.ApiGatewayManagementApi({ endpoint: process.env.API_GATEWAY_URI });
+// eslint-disable-next-line import/no-mutable-exports
+export let io: ReturnType<typeof socketio>;
 
-export const handler: APIGatewayProxyHandler = async (event) => {
-  const context = event.requestContext;
-  const connectionId = context.connectionId!;
-  const routeKey = context.routeKey as '$connect' | '$disconnect' | '$default';
-  try {
-    if (routeKey === '$connect') {
-      await db.Session.create({ connectionId });
-    } else if (routeKey === '$disconnect') {
-      const session = db.Session.findOne({ connectionId });
+const init = (server: Server) => {
+  io = socketio(server);
+
+  io.on('connection', async (socket) => {
+    await db.Session.create({ connectionId: socket.id });
+    socket.on('message', (payload) => {
+      socket.broadcast.emit('message', payload);
+    });
+    socket.on('disconnect', () => {
+      const session = db.Session.findOne({
+        socketId: socket.id,
+      });
       if (!session) {
         throw new Error('Session not exists!');
       }
-      await session.remove();
-    } else {
-      const payload = JSON.parse(event.body!);
-
-      switch (payload.type) {
-        case 'message': {
-          await broadcastMessageToClient(connectionId, payload);
-          break;
-        }
-        default: {
-          throw new Error(`Invalid message: ${JSON.stringify(payload)}`);
-        }
+      if (session) {
+        session.remove();
       }
-    }
-  } catch (e) {
-    return {
-      statusCode: 500,
-      body: `Malformed event body: ${event.body}`,
-    };
-  }
-
-  return {
-    statusCode: 200,
-    body: 'Success',
-  };
+    });
+  });
 };
 
-const sendMessageToClient = async (connectionId: string, message: any) => {
-  await apiGateway.postToConnection({
-    ConnectionId: connectionId,
-    Data: JSON.stringify(message),
-  }).promise();
-}
-
-const broadcastMessageToClient = async (senderId: string, message: any) => {
-  const sessions = await db.Session.find({});
-  const connectionIds = sessions
-    .map(({ connectionId }) => connectionId)
-    .filter((connectionId) => connectionId !== senderId)
-
-  await Promise.all(connectionIds.map(connectionId => sendMessageToClient(connectionId, {
-    ...message,
-    connectionId: senderId,
-  })));
-}
+export default init;
