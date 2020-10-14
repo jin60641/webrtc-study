@@ -1,25 +1,36 @@
 import {
-  store,
-} from 'store';
+  Store,
+} from 'redux';
 import actions from 'store/video/actions';
+import socketio from 'socket.io-client';
 
-const socket = new WebSocket(process.env.REACT_APP_SOCKET_HOST as string);
+let store: Store;
 
-socket.onopen = () => {
+const connectStore = (initedStore: Store) => {
+  store = initedStore;
+};
+
+
+const socket = socketio.connect(process.env.REACT_APP_SOCKET_HOST as string);
+
+socket.on('connection', () => {
   store.dispatch(actions.setIsSocketReady(true));
-};
+});
 
-socket.onmessage = ({
-  data,
-} : any) => {
-  store.dispatch(actions.receiveMessage(JSON.parse(data)));
-};
+socket.on('message', (action: any) => {
+  if (store) {
+    store.dispatch(action);
+  }
+});
 
 export const sendMessage = (body: any) => {
-  socket.send(JSON.stringify({
+  socket.emit('message', {
     type: 'message',
     body,
-  }));
+  });
 };
 
-export default socket;
+export default {
+  connectStore,
+};
+

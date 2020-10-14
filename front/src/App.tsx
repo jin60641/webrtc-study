@@ -17,6 +17,7 @@ import Alert from 'components/Alert';
 import Main from 'pages/Main';
 import routes from 'constants/routes';
 import Sidebar from 'components/Sidebar';
+import 'utils/socket';
 
 import 'vendor';
 
