@@ -16,6 +16,14 @@ const videoReducer = createReducer(initialState)
     ...state,
     isSocketReady: action.payload,
   }))
+  .handleAction(videoActions.disconnectPeer, (state, action) => {
+    const nextPeers = { ...state.peers };
+    delete nextPeers[action.payload];
+    return {
+      ...state,
+      peers: nextPeers,
+    };
+  })
   .handleAction(videoActions.setConnection, (state, action) => ({
     ...state,
     peers: {

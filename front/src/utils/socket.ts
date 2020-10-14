@@ -24,9 +24,9 @@ socket.on('connect', () => {
   socketConnected = true;
 });
 
-socket.on('message', (data: any) => {
+socket.on('message', (action: any) => {
   if (store) {
-    store.dispatch(actions.receiveMessage(data));
+    store.dispatch(action);
   }
 });
 

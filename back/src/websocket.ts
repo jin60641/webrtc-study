@@ -14,8 +14,11 @@ const init = (server: Server) => {
     await db.Session.create({ connectionId: socket.id });
     socket.on('message', (payload) => {
       socket.broadcast.emit('message', {
-        connectionId: socket.id,
-        ...payload,
+        type: 'RECEIVE_MESSAGE',
+        payload: {
+          connectionId: socket.id,
+          ...payload,
+        },
       });
     });
     socket.on('disconnect', () => {
@@ -25,6 +28,10 @@ const init = (server: Server) => {
       if (!session) {
         throw new Error('Session not exists!');
       }
+      socket.broadcast.emit('message', {
+        type: 'DISCONNECT_PEER',
+        payload: socket.id,
+      });
       if (session) {
         session.remove();
       }
