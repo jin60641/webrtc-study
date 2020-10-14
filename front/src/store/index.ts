@@ -8,9 +8,8 @@ import {
   createLogger,
 } from 'redux-logger';
 import {
-  persistStore, persistReducer,
+  persistStore,
 } from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
 
 import {
   RootAction, RootState,
@@ -22,12 +21,6 @@ import {
   handleSignIn,
 } from './utils';
 
-const persistConfig = {
-  key: 'root',
-  storage,
-  whitelist: ['user'],
-};
-
 const persistHandler = (store: Store<RootState>) => () => {
   const state = store.getState();
   if (state.user.token) {
@@ -35,8 +28,6 @@ const persistHandler = (store: Store<RootState>) => () => {
   }
   setHeader('x-user-locale', state.locale);
 };
-
-const pReducer = persistReducer(persistConfig, rootReducer);
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
@@ -51,7 +42,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 const store = createStore(
-  pReducer,
+  rootReducer,
   composeEnhancers(applyMiddleware(...middlewares)),
 );
 

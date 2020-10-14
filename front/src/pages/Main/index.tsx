@@ -22,7 +22,7 @@ const Main: React.FC = () => {
       {routes
         .filter(({
           RouteComponent,
-        }) => signedIn || !RouteComponent)
+        }) => signedIn !== !!RouteComponent)
         .map(({
           key,
         }) => (

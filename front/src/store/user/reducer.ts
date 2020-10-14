@@ -1,6 +1,7 @@
 import {
   createReducer,
 } from 'typesafe-actions';
+import { persistReducer } from 'redux-persist';
 
 import {
   initialState,
@@ -8,7 +9,13 @@ import {
 import {
   handleSignIn,
 } from '../utils';
+import storage from 'redux-persist/lib/storage';
 import userActions from './actions';
+
+const persistConfig = {
+  key: 'user',
+  storage,
+}
 
 const user = createReducer(initialState)
   .handleAction(userActions.signOut, () => initialState)
@@ -25,4 +32,4 @@ const user = createReducer(initialState)
     return payload;
   });
 
-export default user;
+export default persistReducer(persistConfig, user);
