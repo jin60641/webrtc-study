@@ -1,9 +1,5 @@
-import {
-  Actions as UserActions,
-} from 'store/user/types';
-import {
-  Actions as LayoutActions,
-} from 'store/layout/types';
+import { Actions as LayoutActions } from 'store/layout/types';
+import { Actions as UserActions } from 'store/user/types';
 
 export const Actions = [UserActions, LayoutActions];
 

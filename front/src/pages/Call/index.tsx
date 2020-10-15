@@ -1,37 +1,20 @@
-import React, {
-  useRef,
-} from 'react';
-import {
-  useSelector,
-} from 'react-redux';
-import {
-  createStyles, makeStyles, Theme,
-} from '@material-ui/core/styles';
+import React, { useRef } from 'react';
 
-import {
-  RootState,
-} from 'store/types';
+import { makeStyles } from '@material-ui/core/styles';
+import { useSelector } from 'react-redux';
+
+import { RootState } from 'store/types';
 
 import My from './My';
 import PeerVideo from './PeerVideo';
 
-const useStyles = makeStyles((theme: Theme) => createStyles({
-  root: {},
-}));
+const useStyles = makeStyles({ root: {} });
 
-const selector = (({
-  video: {
-    peers,
-  },
-}: RootState) => ({
-  peers,
-}));
+const selector = (({ video: { peers } }: RootState) => ({ peers }));
 
 const Call: React.FC = () => {
   const classes = useStyles();
-  const {
-    peers,
-  } = useSelector(selector);
+  const { peers } = useSelector(selector);
   const vidRef = useRef<HTMLVideoElement>(null);
 
   return (

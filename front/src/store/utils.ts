@@ -1,26 +1,19 @@
 import axios from 'axios';
+import { from } from 'rxjs';
 import {
-  from,
-} from 'rxjs';
-import socket from 'utils/socket';
-import {
-  map,
-  exhaustMap,
   catchError,
+  exhaustMap,
   filter,
+  map,
   takeUntil,
 } from 'rxjs/operators';
-import {
-  isActionOf,
-} from 'typesafe-actions';
+import { isActionOf } from 'typesafe-actions';
+
+import socket from 'utils/socket';
 
 import layoutActions from './layout/actions';
-import {
-  AlertType,
-} from './layout/types';
-import {
-  Epic,
-} from './types';
+import { AlertType } from './layout/types';
+import { Epic } from './types';
 
 axios.defaults.baseURL = process.env.REACT_APP_API_HOST;
 

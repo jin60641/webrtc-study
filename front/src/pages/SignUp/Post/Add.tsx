@@ -1,29 +1,21 @@
 import React, {
-  useState,
   useCallback,
+  useState,
 } from 'react';
-import {
-  useDispatch,
-} from 'react-redux';
-import actions from 'store/post/actions';
-import {
-  PostPostRequestPayload,
-} from 'store/post/types';
 
-const initialPayload = {
-  text: '',
-};
+import { useDispatch } from 'react-redux';
+
+import actions from 'store/post/actions';
+import { PostPostRequestPayload } from 'store/post/types';
+
+const initialPayload = { text: '' };
 
 const Add: React.FC = () => {
   const dispatch = useDispatch();
-  const [payload, setPayload] = useState<PostPostRequestPayload>({
-    ...initialPayload,
-  });
+  const [payload, setPayload] = useState<PostPostRequestPayload>({ ...initialPayload });
 
   const handleChange = useCallback((e: React.FormEvent<HTMLInputElement>) => {
-    const {
-      name, value,
-    } = e.currentTarget;
+    const { name, value } = e.currentTarget;
     setPayload((val) => ({
       ...val,
       [name]: value,
@@ -33,9 +25,7 @@ const Add: React.FC = () => {
   const handleSubmit = useCallback((e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(actions.postPost.request(payload));
-    setPayload({
-      ...initialPayload,
-    });
+    setPayload({ ...initialPayload });
   }, [dispatch, payload]);
 
   return (

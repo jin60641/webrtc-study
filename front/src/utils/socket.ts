@@ -1,8 +1,7 @@
-import {
-  Store,
-} from 'redux';
-import actions from 'store/video/actions';
+import { Store } from 'redux';
 import socketio from 'socket.io-client';
+
+import actions from 'store/video/actions';
 
 let store: Store;
 let socketConnected = false;
@@ -37,7 +36,4 @@ export const sendMessage = (body: any) => {
   });
 };
 
-export default {
-  connectStore,
-};
-
+export default { connectStore };

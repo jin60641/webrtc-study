@@ -1,12 +1,8 @@
-import {
-  createReducer,
-} from 'typesafe-actions';
-
-import {
-  initialState,
-} from './types';
+import { createReducer } from 'typesafe-actions';
 
 import postActions from './actions';
+import { initialState } from './types';
+
 
 const post = createReducer(initialState)
   .handleAction(postActions.getPosts.success, (state, action) => ({
@@ -15,9 +11,7 @@ const post = createReducer(initialState)
   }))
   .handleAction(postActions.deletePost.success, (state, action) => ({
     ...state,
-    list: state.list.filter(({
-      _id,
-    }) => _id !== action.payload),
+    list: state.list.filter(({ _id }) => _id !== action.payload),
   }))
   .handleAction(postActions.postPost.success, (state, action) => ({
     ...state,

@@ -1,14 +1,11 @@
-import {
-  Reducer,
-} from 'typesafe-actions';
-import {
-  RootAction,
-} from 'store/types';
+import { Reducer } from 'typesafe-actions';
+
+import { RootAction } from 'store/types';
 
 import {
+  Actions,
   initialState,
   IsFetchingState,
-  Actions,
   Middleware,
 } from './types';
 

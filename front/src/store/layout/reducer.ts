@@ -1,13 +1,9 @@
-import {
-  createReducer,
-} from 'typesafe-actions';
 import { persistReducer } from 'redux-persist';
-
-import {
-  initialState,
-} from './types';
-import layoutActions from './actions';
 import storage from 'redux-persist/lib/storage';
+import { createReducer } from 'typesafe-actions';
+
+import layoutActions from './actions';
+import { initialState } from './types';
 
 const persistConfig = {
   key: 'layout',
@@ -26,9 +22,7 @@ const alertReducer = createReducer(initialState)
   }))
   .handleAction(layoutActions.dismissAlert, (state) => ({
     ...state,
-    alert: {
-      ...initialState.alert,
-    },
+    alert: { ...initialState.alert },
   }));
 
 export default persistReducer(persistConfig, alertReducer);

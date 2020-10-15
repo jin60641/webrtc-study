@@ -1,15 +1,8 @@
-import {
-  useSelector,
-} from 'react-redux';
-import {
-  RootState,
-} from 'store/types';
+import { useSelector } from 'react-redux';
 
-const selector = ({
-  user: {
-    token,
-  },
-}: RootState) => !!token;
+import { RootState } from 'store/types';
+
+const selector = ({ user: { token } }: RootState) => !!token;
 
 const useSignedIn = (): boolean => {
   const signedIn = useSelector<RootState, boolean>(selector);

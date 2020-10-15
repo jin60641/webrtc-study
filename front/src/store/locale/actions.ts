@@ -1,6 +1,4 @@
-import {
-  createAction,
-} from 'typesafe-actions';
+import { createAction } from 'typesafe-actions';
 
 import {
   Actions,
@@ -9,6 +7,4 @@ import {
 
 const setLocale = createAction(Actions.SET_LOCALE)<LocaleState>();
 
-export default {
-  setLocale,
-};
+export default { setLocale };

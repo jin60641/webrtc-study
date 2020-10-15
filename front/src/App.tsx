@@ -1,30 +1,25 @@
 import React from 'react';
+
+import { CssBaseline } from '@material-ui/core';
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import {
-  CssBaseline,
-} from '@material-ui/core';
-import {
-  createStyles, makeStyles, Theme,
-} from '@material-ui/core/styles';
-import {
+  Redirect,
+  Route,
   BrowserRouter as Router,
   Switch,
-  Route,
-  Redirect,
 } from 'react-router-dom';
 
-import Header from 'components/Header';
 import Alert from 'components/Alert';
-import Main from 'pages/Main';
-import routes from 'constants/routes';
+import Header from 'components/Header';
 import Sidebar from 'components/Sidebar';
+import routes from 'constants/routes';
+import Main from 'pages/Main';
 import 'utils/socket';
 
 import 'vendor';
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
-  root: {
-    display: 'flex',
-  },
+  root: { display: 'flex' },
   content: {
     flexGrow: 1,
     padding: theme.spacing(3),

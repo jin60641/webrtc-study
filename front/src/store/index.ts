@@ -1,24 +1,16 @@
 import {
-  createStore, Store, applyMiddleware, compose,
+  applyMiddleware, compose, createStore, Store,
 } from 'redux';
-import {
-  createEpicMiddleware,
-} from 'redux-observable';
-import {
-  createLogger,
-} from 'redux-logger';
-import {
-  persistStore,
-} from 'redux-persist';
+import { createLogger } from 'redux-logger';
+import { createEpicMiddleware } from 'redux-observable';
+import { persistStore } from 'redux-persist';
 
-import {
-  RootAction, RootState,
-} from './types';
-import rootReducer from './reducer';
 import rootEpic from './epic';
+import rootReducer from './reducer';
+import { RootAction, RootState } from './types';
 import {
-  setHeader,
   handleSignIn,
+  setHeader,
 } from './utils';
 
 const persistHandler = (store: Store<RootState>) => () => {

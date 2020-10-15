@@ -1,36 +1,26 @@
 import React, {
-  useState, useCallback, useMemo, useEffect,
+  useCallback, useEffect, useMemo, useState,
 } from 'react';
-import Location from 'history';
-import {
-  StaticContext,
-} from 'react-router';
-import {
-  RouteComponentProps,
-} from 'react-router-dom';
-import {
-  useDispatch,
-} from 'react-redux';
+
 import {
   Avatar,
+  Box,
   Button,
-  TextField,
   Container,
   Link,
-  Box,
+  TextField,
   Typography,
 } from '@material-ui/core';
-import {
-  makeStyles,
-} from '@material-ui/core/styles';
-import {
-  Lock,
-} from '@material-ui/icons';
-import userActions from 'store/user/actions';
-import {
-  SignInRequestPayload,
-} from 'store/user/types';
+import { makeStyles } from '@material-ui/core/styles';
+import { Lock } from '@material-ui/icons';
+import Location from 'history';
+import { useDispatch } from 'react-redux';
+import { StaticContext } from 'react-router';
+import { RouteComponentProps } from 'react-router-dom';
+
 import useSignedIn from 'hooks/useSignedIn';
+import userActions from 'store/user/actions';
+import { SignInRequestPayload } from 'store/user/types';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -56,15 +46,11 @@ const useStyles = makeStyles((theme) => ({
     width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
+  submit: { margin: theme.spacing(3, 0, 2) },
 }));
 
 const SignIn: React.FC<RouteComponentProps<{}, StaticContext, { from: Location }>> = (
-  {
-    location, history,
-  },
+  { location, history },
 ) => {
   const signedIn = useSignedIn();
   const classes = useStyles();
@@ -75,11 +61,7 @@ const SignIn: React.FC<RouteComponentProps<{}, StaticContext, { from: Location }
     password: '',
   });
 
-  const handleChange = useCallback(({
-    target: {
-      name, value,
-    },
-  }) => {
+  const handleChange = useCallback(({ target: { name, value } }) => {
     setPayload({
       ...payload,
       [name]: value,
@@ -93,9 +75,7 @@ const SignIn: React.FC<RouteComponentProps<{}, StaticContext, { from: Location }
 
   useEffect(() => {
     if (signedIn) {
-      history.replace(from || {
-        pathname: '/',
-      });
+      history.replace(from || { pathname: '/' });
     }
   }, [signedIn, from, history]);
 

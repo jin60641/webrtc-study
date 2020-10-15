@@ -1,14 +1,11 @@
-import {
-  FC,
-} from 'react';
-import {
-  Route as DefaultRoute, RouteProps,
-} from 'react-router-dom';
+import { FC } from 'react';
+
+import { Route as DefaultRoute, RouteProps } from 'react-router-dom';
 
 import PrivateRoute from 'components/PrivateRoute';
+import Call from 'pages/Call';
 import SignIn from 'pages/SignIn';
 import SignUp from 'pages/SignUp';
-import Call from 'pages/Call';
 
 interface Route extends RouteProps {
   key: string;

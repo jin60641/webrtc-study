@@ -1,23 +1,21 @@
 import React, {
-  FC, useEffect, useRef, memo, useState, useCallback
+  FC,
+  memo,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
 } from 'react';
-import {
-  useSelector, useDispatch, shallowEqual
-} from 'react-redux';
-import {
-  makeStyles, createStyles,
-} from '@material-ui/core/styles';
+
+import { createStyles, makeStyles } from '@material-ui/core/styles';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+
+import { RootState } from 'store/types';
 import actions from 'store/video/actions';
 import { Candidate } from 'store/video/types';
-import {
-  RootState,
-} from 'store/types';
-import {
-  sendMessage,
-} from 'utils/socket';
-import {
-  formatDescription,
-} from 'utils/webrtc';
+import { sendMessage } from 'utils/socket';
+import { formatDescription } from 'utils/webrtc';
 
 interface PeerViewProps {
   vidRef: React.RefObject<HTMLVideoElement>;
@@ -33,34 +31,31 @@ const useStyles = makeStyles(() => createStyles({
     height: '360px',
     width: '270px',
   },
-  peerVideo: {
-    width: '360px',
-  },
+  peerVideo: { width: '360px' },
 }));
+
+const selector = (connectionId: string) => ({
+  video: {
+    isReady,
+    isSocketReady,
+    peers: { [connectionId]: { isICEReady } },
+  },
+}: RootState) => ({
+  isReady,
+  isSocketReady,
+  isICEReady,
+});
 
 const PeerView: FC<PeerViewProps> = ({
   vidRef,
   connectionId,
 }) => {
+  const peerSelector = useMemo(() => selector(connectionId), [connectionId]);
   const {
     isReady,
     isSocketReady,
     isICEReady,
-  } = useSelector(({
-    video: {
-      isReady,
-      isSocketReady,
-      peers: {
-        [connectionId]: {
-          isICEReady,
-        }
-      }
-    },
-  }: RootState) => ({
-    isReady,
-    isSocketReady,
-    isICEReady,
-  }), shallowEqual);
+  } = useSelector(peerSelector, shallowEqual);
   const [candidates, setCandidates] = useState<Candidate[]>([]);
   const dispatch = useDispatch();
   const classes = useStyles();
@@ -109,14 +104,12 @@ const PeerView: FC<PeerViewProps> = ({
       });
 
       connection
-        .createOffer({
-          offerToReceiveVideo: true, offerToReceiveAudio: true,
-        })
+        .createOffer({ offerToReceiveVideo: true, offerToReceiveAudio: true })
         .then((sessionDescription) => {
           const desc = formatDescription(sessionDescription);
           connection.setLocalDescription(desc);
           sendMessage(desc);
-        })
+        });
 
       dispatch(actions.setConnection({
         connectionId,

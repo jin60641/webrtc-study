@@ -21,9 +21,7 @@ export enum Actions {
   DELETE_POST_CANCEL = 'DELETE_POST#CANCEL',
 }
 
-export const initialState: PostState = {
-  list: [],
-};
+export const initialState: PostState = { list: [] };
 
 export interface Post extends PostPostRequestPayload {
   _id: string;

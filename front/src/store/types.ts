@@ -1,35 +1,18 @@
-import {
-  ActionType,
-} from 'typesafe-actions';
 
-import {
-  Epic as RxEpic,
-} from 'redux-observable';
+import { Epic as RxEpic } from 'redux-observable';
+import { ActionType } from 'typesafe-actions';
 
-import {
-  UserState,
-} from './user/types';
-import {
-  LayoutState,
-} from './layout/types';
-import {
-  IsFetchingState,
-} from './isFetching/types';
-import {
-  PostState,
-} from './post/types';
-import {
-  LocaleState,
-} from './locale/types';
-import {
-  VideoState,
-} from './video/types';
-
-import userActions from './user/actions';
+import { IsFetchingState } from './isFetching/types';
 import layoutActions from './layout/actions';
-import postActions from './post/actions';
+import { LayoutState } from './layout/types';
 import localeActions from './locale/actions';
+import { LocaleState } from './locale/types';
+import postActions from './post/actions';
+import { PostState } from './post/types';
+import userActions from './user/actions';
+import { UserState } from './user/types';
 import videoActions from './video/actions';
+import { VideoState } from './video/types';
 
 export interface RootState {
   user: UserState,

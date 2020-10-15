@@ -2,31 +2,23 @@ import React, {
   useCallback,
   useEffect,
 } from 'react';
+
 import {
-  useSelector,
   useDispatch,
+  useSelector,
 } from 'react-redux';
-import actions from 'store/post/actions';
+
 import useSignedIn from 'hooks/useSignedIn';
-import {
-  RootState,
-} from 'store/types';
+import actions from 'store/post/actions';
+import { RootState } from 'store/types';
 
 import Add from './Add';
 
-const selector = (({
-  post: {
-    list,
-  },
-}: RootState) => ({
-  list,
-}));
+const selector = (({ post: { list } }: RootState) => ({ list }));
 
 const Post: React.FC = () => {
   const signedIn = useSignedIn();
-  const {
-    list,
-  } = useSelector(selector);
+  const { list } = useSelector(selector);
   const dispatch = useDispatch();
 
   useEffect(() => {

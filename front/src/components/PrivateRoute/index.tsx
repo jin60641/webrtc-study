@@ -1,12 +1,8 @@
-import React, {
-  FC,
-} from 'react';
-import {
-  Redirect, Route, RouteComponentProps,
-} from 'react-router-dom';
-import {
-  Location,
-} from 'history';
+import React, { FC } from 'react';
+
+import { Location } from 'history';
+import { Redirect, Route, RouteComponentProps } from 'react-router-dom';
+
 import useSignedIn from 'hooks/useSignedIn';
 
 interface Props {
@@ -30,9 +26,7 @@ const PrivateRoute: FC<Props> = ({
         <Redirect
           to={{
             pathname: '/signin',
-            state: {
-              from: routeProps.location,
-            },
+            state: { from: routeProps.location },
           }}
         />
       ))}

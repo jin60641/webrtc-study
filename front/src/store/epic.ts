@@ -1,9 +1,7 @@
-import {
-  combineEpics,
-} from 'redux-observable';
+import { combineEpics } from 'redux-observable';
 
-import userEpic from './user/epics';
 import postEpic from './post/epics';
+import userEpic from './user/epics';
 import videoEpic from './video/epics';
 
 const epics = [

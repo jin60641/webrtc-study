@@ -1,26 +1,16 @@
+import { combineEpics } from 'redux-observable';
+import { from } from 'rxjs';
 import {
   filter,
   mergeMap,
 } from 'rxjs/operators';
-import {
-  from,
-} from 'rxjs';
-import {
-  combineEpics,
-} from 'redux-observable';
-import {
-  isActionOf,
-} from 'typesafe-actions';
-import {
-  sendMessage,
-} from 'utils/socket';
-import {
-  formatDescription,
-} from 'utils/webrtc';
+import { isActionOf } from 'typesafe-actions';
 
-import {
-  Epic,
-} from '../types';
+import { sendMessage } from 'utils/socket';
+import { formatDescription } from 'utils/webrtc';
+
+import { Epic } from '../types';
+
 import actions from './actions';
 
 export const receiveMessageEpic: Epic = (action$, state$) => action$.pipe(
@@ -32,9 +22,7 @@ export const receiveMessageEpic: Epic = (action$, state$) => action$.pipe(
 export const processMessageRequestEpic: Epic = (action$, state$) => action$.pipe(
   filter(isActionOf(actions.processMessage.request)),
   mergeMap(({ payload: connectionId }) => {
-    const {
-      peers,
-    } = state$.value.video;
+    const { peers } = state$.value.video;
     const { connection, messages } = peers[connectionId];
 
     if (!connection || !messages.length) {
@@ -43,31 +31,24 @@ export const processMessageRequestEpic: Epic = (action$, state$) => action$.pipe
 
     const [message] = messages;
 
-    console.log(message.type, connection.signalingState);
     if (message.type === 'offer') {
       return from(connection.setRemoteDescription(new RTCSessionDescription(message)))
         .pipe(() => from(connection
           .createAnswer()
           .then(formatDescription)
-          .then(desc => desc))
-            .pipe(
-              mergeMap((desc) => 
-                from(connection.setLocalDescription(desc).then(() => desc))
-                  .pipe(
-                    mergeMap((desc) => {
-                      sendMessage(desc);
-                      return [actions.processMessage.success(connectionId)];
-                    })
-                  )
-              )
-            )
-        )
-    } else if (message.type === 'answer') {
+          .then((desc) => desc))
+          .pipe(mergeMap((desc) => from(connection.setLocalDescription(desc).then(() => desc)).pipe(
+            mergeMap(() => {
+              sendMessage(desc);
+              return [actions.processMessage.success(connectionId)];
+            }),
+          ))));
+    } if (message.type === 'answer') {
       return from(connection.setRemoteDescription(new RTCSessionDescription(message)))
         .pipe(
           mergeMap(() => [actions.processMessage.success(connectionId)]),
-        )
-    } else if (message.type === 'candidate' && connection.signalingState === 'stable') {
+        );
+    } if (message.type === 'candidate' && connection.signalingState === 'stable') {
       const candidate = new RTCIceCandidate({
         sdpMLineIndex: message.label,
         sdpMid: message.id,
@@ -76,13 +57,13 @@ export const processMessageRequestEpic: Epic = (action$, state$) => action$.pipe
       return from(connection.addIceCandidate(candidate))
         .pipe(
           mergeMap(() => [actions.processMessage.success(connectionId)]),
-        )
+        );
     }
     return [actions.processMessage.cancel(connectionId)];
-  })
+  }),
 );
 
-export const processMessageSuccessEpic: Epic = (action$, state$) => action$.pipe(
+export const processMessageSuccessEpic: Epic = (action$) => action$.pipe(
   filter(isActionOf(actions.processMessage.success)),
   mergeMap(({ payload }) => [actions.processMessage.request(payload)]),
 );

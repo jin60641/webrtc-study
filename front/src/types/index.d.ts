@@ -1,6 +1,4 @@
-import {
-  StoreEnhancer, compose,
-} from 'redux';
+import { compose, StoreEnhancer } from 'redux';
 
 declare global {
   interface Window {

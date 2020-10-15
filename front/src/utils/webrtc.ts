@@ -6,7 +6,7 @@ function findLineInRange(
   substr: string,
 ): number | null {
   const realEndLine = endLine !== -1 ? endLine : sdpLines.length;
-  for (let i = startLine; i < realEndLine; ++i) {
+  for (let i = startLine; i < realEndLine; i += 1) {
     if (sdpLines[i].indexOf(prefix) === 0) {
       if (
         !substr
@@ -34,9 +34,10 @@ function removeCodec(mLine: string, payload: string) {
   const elements = mLine.split(' ');
   const newLine = [];
   let index = 0;
-  for (let i = 0; i < elements.length; i++) {
+  for (let i = 0; i < elements.length; i += 1) {
     if (elements[i] !== payload) {
-      newLine[index++] = elements[i];
+      newLine[index] = elements[i];
+      index += 1;
     }
   }
   return newLine.join(' ');
@@ -63,12 +64,12 @@ export function reorderCodec(sdp: string): string {
       const isH264Line = findLineInRange(sdpLines, i, i + 1, 'a=', ':120');
       const isNewCodec = getCodecPayloadType(sdpLines[i]);
       if (!isH264Line || (isNewCodec && isNewCodec !== payload)) break;
-      i++;
+      i += 1;
     }
     sdpLines.splice(h264Index, i - h264Index);
   }
-  sdp = sdpLines.join('\r\n');
-  return sdp;
+  const ret = sdpLines.join('\r\n');
+  return ret;
 }
 
 /* mLine: sdp line ex) m=audio 9 RTP/SAVPF 103 111 104 9 0 8 106 105 13 126
@@ -77,12 +78,14 @@ function setDefaultCodec(mLine: string, payload: string) {
   const elements = mLine.split(' ');
   const newLine = [];
   let index = 0;
-  for (let i = 0; i < elements.length; i++) {
+  for (let i = 0; i < elements.length; i += 1) {
     if (index === 3) {
-      newLine[index++] = payload;
+      newLine[index] = payload;
+      index += 1;
     }
     if (elements[i] !== payload) {
-      newLine[index++] = elements[i];
+      newLine[index] = elements[i];
+      index += 1;
     }
   }
   return newLine.join(' ');
@@ -108,8 +111,8 @@ export function preferAudioCodec(sdp: string, codec: string) {
       sdpLines[mLineIndex] = setDefaultCodec(sdpLines[mLineIndex], payload);
     }
   }
-  sdp = sdpLines.join('\r\n');
-  return sdp;
+  const ret = sdpLines.join('\r\n');
+  return ret;
 }
 
 export function formatDescription(desc: RTCSessionDescriptionInit): RTCSessionDescriptionInit {

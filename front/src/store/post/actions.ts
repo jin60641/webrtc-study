@@ -5,12 +5,12 @@ import {
 
 import {
   Actions,
-  ReceivePostPayload,
+  DeletePostRequestPayload,
+  DeletePostSuccessPayload,
   GetPostsSuccessPayload,
   PostPostRequestPayload,
   PostPostSuccessPayload,
-  DeletePostRequestPayload,
-  DeletePostSuccessPayload,
+  ReceivePostPayload,
 } from './types';
 
 const receivePost = createAction(

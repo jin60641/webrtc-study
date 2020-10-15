@@ -1,21 +1,15 @@
 import React from 'react';
+
 import {
-  useSelector, useDispatch,
-} from 'react-redux';
-import clsx from 'clsx';
-import {
-  createStyles, makeStyles, Theme,
-} from '@material-ui/core/styles';
-import {
-  AppBar, Toolbar, IconButton, Typography,
+  AppBar, IconButton, Toolbar, Typography,
 } from '@material-ui/core';
-import {
-  Menu,
-} from '@material-ui/icons';
-import {
-  RootState,
-} from 'store/types';
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import { Menu } from '@material-ui/icons';
+import clsx from 'clsx';
+import { useDispatch, useSelector } from 'react-redux';
+
 import layoutActions from 'store/layout/actions';
+import { RootState } from 'store/types';
 
 const drawerWidth = 240;
 
@@ -35,19 +29,11 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
       duration: theme.transitions.duration.enteringScreen,
     }),
   },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
-  hide: {
-    display: 'none',
-  },
+  menuButton: { marginRight: theme.spacing(2) },
+  hide: { display: 'none' },
 }));
 
-const selector = ({
-  layout: {
-    drawer: isOpen,
-  },
-}: RootState) => isOpen;
+const selector = ({ layout: { drawer: isOpen } }: RootState) => isOpen;
 
 const Header: React.FC = () => {
   const dispatch = useDispatch();
@@ -61,9 +47,7 @@ const Header: React.FC = () => {
   return (
     <AppBar
       position='fixed'
-      className={clsx(classes.appBar, {
-        [classes.appBarShift]: isOpen,
-      })}
+      className={clsx(classes.appBar, { [classes.appBarShift]: isOpen })}
     >
       <Toolbar>
         <IconButton
@@ -71,9 +55,7 @@ const Header: React.FC = () => {
           aria-label='open drawer'
           onClick={handleClickOpen}
           edge='start'
-          className={clsx(classes.menuButton, {
-            [classes.hide]: isOpen,
-          })}
+          className={clsx(classes.menuButton, { [classes.hide]: isOpen })}
         >
           <Menu />
         </IconButton>

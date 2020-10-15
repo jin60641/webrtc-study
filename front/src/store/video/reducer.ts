@@ -1,11 +1,7 @@
-import {
-  createReducer,
-} from 'typesafe-actions';
+import { createReducer } from 'typesafe-actions';
 
-import {
-  initialState,
-} from './types';
 import videoActions from './actions';
+import { initialState } from './types';
 
 const videoReducer = createReducer(initialState)
   .handleAction(videoActions.setIsReady, (state, action) => ({
@@ -32,7 +28,7 @@ const videoReducer = createReducer(initialState)
         connection: action.payload.connection,
         messages: [],
         isICEReady: false,
-      }
+      },
     },
   }))
   .handleAction(videoActions.receiveMessage, ({
@@ -42,7 +38,7 @@ const videoReducer = createReducer(initialState)
     payload: {
       connectionId,
       body: message,
-    }
+    },
   }) => {
     const peer = peers[connectionId];
     return {
@@ -51,17 +47,15 @@ const videoReducer = createReducer(initialState)
         ...peers,
         [connectionId]: {
           ...peer,
-          messages: !!message.type ? [...(peer?.messages || []), message] : [],
-        }
+          messages: message.type ? [...(peer?.messages || []), message] : [],
+        },
       },
     };
   })
   .handleAction(videoActions.processMessage.success, ({
     peers,
     ...state
-  }, {
-    payload: connectionId,
-  }) => {
+  }, { payload: connectionId }) => {
     const peer = peers[connectionId];
     const [_processed, ...messages] = peer.messages;
     return {
@@ -72,16 +66,14 @@ const videoReducer = createReducer(initialState)
           ...peer,
           messages,
           isICEReady: true,
-        }
+        },
       },
     };
   })
   .handleAction(videoActions.processMessage.cancel, ({
     peers,
     ...state
-  }, {
-    payload: connectionId,
-  }) => {
+  }, { payload: connectionId }) => {
     const peer = peers[connectionId];
     const [_processed, ...messages] = peer.messages;
     return {
@@ -91,9 +83,9 @@ const videoReducer = createReducer(initialState)
         [connectionId]: {
           ...peer,
           messages,
-        }
+        },
       },
     };
-  })
+  });
 
 export default videoReducer;

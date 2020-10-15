@@ -1,16 +1,13 @@
-import {
-  combineEpics,
-} from 'redux-observable';
+import { combineEpics } from 'redux-observable';
+
+import { createAsyncEpic } from '../utils';
 
 import actions from './actions';
 import {
+  requestDeletePost,
   requestGetPosts,
   requestPostPost,
-  requestDeletePost,
 } from './api';
-import {
-  createAsyncEpic,
-} from '../utils';
 
 const getPostsEpic = createAsyncEpic(actions.getPosts, requestGetPosts);
 const postPostEpic = createAsyncEpic(actions.postPost, requestPostPost);

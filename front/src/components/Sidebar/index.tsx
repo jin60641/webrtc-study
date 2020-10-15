@@ -1,21 +1,19 @@
 import React from 'react';
-import clsx from 'clsx';
+
 import {
-  Drawer, List, Divider, IconButton, ListItem, ListItemIcon, ListItemText,
+  Divider, Drawer, IconButton, List, ListItem, ListItemIcon, ListItemText,
 } from '@material-ui/core';
+import {
+  createStyles, makeStyles, Theme, useTheme,
+} from '@material-ui/core/styles';
 import {
   ChevronLeft, ChevronRight, PeopleAlt, Settings,
 } from '@material-ui/icons';
-import {
-  useSelector, useDispatch,
-} from 'react-redux';
-import {
-  createStyles, makeStyles, useTheme, Theme,
-} from '@material-ui/core/styles';
-import {
-  RootState,
-} from 'store/types';
+import clsx from 'clsx';
+import { useDispatch, useSelector } from 'react-redux';
+
 import layoutActions from 'store/layout/actions';
+import { RootState } from 'store/types';
 
 const drawerWidth = 240;
 const list = [{
@@ -57,11 +55,7 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
   },
 }));
 
-const selector = ({
-  layout: {
-    drawer: isOpen,
-  },
-}: RootState) => isOpen;
+const selector = ({ layout: { drawer: isOpen } }: RootState) => isOpen;
 
 const Sidebar: React.FC = () => {
   const dispatch = useDispatch();
@@ -95,9 +89,7 @@ const Sidebar: React.FC = () => {
       </div>
       <Divider />
       <List>
-        {list.map(({
-          name, icon,
-        }) => (
+        {list.map(({ name, icon }) => (
           <ListItem button key={name}>
             <ListItemIcon>{icon}</ListItemIcon>
             <ListItemText primary={name} />

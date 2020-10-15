@@ -1,10 +1,6 @@
-import {
-  createAction,
-} from 'typesafe-actions';
+import { createAction } from 'typesafe-actions';
 
-import {
-  Actions, AlertOption,
-} from './types';
+import { Actions, AlertOption } from './types';
 
 const makeAlert = createAction(Actions.MAKE_ALERT)<AlertOption>();
 

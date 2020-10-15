@@ -1,36 +1,20 @@
-import React, {
-  useState, useEffect,
-} from 'react';
-import {
-  useSelector, useDispatch,
-} from 'react-redux';
-import {
-  Close,
-} from '@material-ui/icons';
+import React, { useEffect, useState } from 'react';
+
 import IconButton from '@material-ui/core/IconButton';
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
-import {
-  makeStyles,
-} from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
+import { Close } from '@material-ui/icons';
+import { useDispatch, useSelector } from 'react-redux';
+
 import actions from 'store/layout/actions';
-import {
-  RootState,
-} from 'store/types';
+import { RootState } from 'store/types';
 
 const useStyles = makeStyles((theme) => ({
-  margin: {
-    margin: theme.spacing(1),
-  },
-  error: {
-    backgroundColor: theme.palette.error.dark,
-  },
-  info: {
-    backgroundColor: theme.palette.primary.main,
-  },
-  icon: {
-    fontSize: 20,
-  },
+  margin: { margin: theme.spacing(1) },
+  error: { backgroundColor: theme.palette.error.dark },
+  info: { backgroundColor: theme.palette.primary.main },
+  icon: { fontSize: 20 },
   iconVariant: {
     opacity: 0.9,
     marginRight: theme.spacing(1),
@@ -66,9 +50,7 @@ const Alert: React.FC = () => {
     }
   }, [state]);
 
-  const {
-    type, message,
-  } = alertOption;
+  const { type, message } = alertOption;
 
   const handleClose = () => {
     dispatch(actions.dismissAlert());

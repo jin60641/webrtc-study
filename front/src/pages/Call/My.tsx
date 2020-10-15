@@ -1,23 +1,14 @@
 import React, {
-  FC, memo, useEffect, useCallback,
+  FC, memo, useCallback, useEffect,
 } from 'react';
-import {
-  useDispatch, useSelector,
-} from 'react-redux';
-import {
-  makeStyles, createStyles,
-} from '@material-ui/core/styles';
-import {
-  Paper,
-} from '@material-ui/core';
 
-import {
-  sendMessage,
-} from 'utils/socket';
-import {
-  RootState,
-} from 'store/types';
+import { Paper } from '@material-ui/core';
+import { createStyles, makeStyles } from '@material-ui/core/styles';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { RootState } from 'store/types';
 import actions from 'store/video/actions';
+import { sendMessage } from 'utils/socket';
 
 interface Props {
   vidRef: React.RefObject<HTMLVideoElement> | null;
@@ -36,12 +27,8 @@ const selector = (({
 const constraints = {
   audio: true,
   video: {
-    width: {
-      min: 640,
-    },
-    height: {
-      min: 360,
-    },
+    width: { min: 640 },
+    height: { min: 360 },
   },
 };
 
@@ -52,14 +39,10 @@ const useStyles = makeStyles(() => createStyles({
     height: '270px',
     width: '360px',
   },
-  video: {
-    width: '360px',
-  },
+  video: { width: '360px' },
 }));
 
-const My: FC<Props> = ({
-  vidRef,
-}) => {
+const My: FC<Props> = ({ vidRef }) => {
   const {
     isReady,
     isSocketReady,
