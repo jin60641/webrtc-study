@@ -36,8 +36,8 @@ export const sendMessage = (body: any, to?: string) => {
   });
 };
 
-export const init = (token: string) => {
+const init = (token: string) => {
   socket.emit('init', token);
-}
+};
 
 export default { connectStore, init };

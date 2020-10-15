@@ -3,7 +3,7 @@ import React from 'react';
 import {
   AppBar, IconButton, Toolbar, Typography,
 } from '@material-ui/core';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import { Menu } from '@material-ui/icons';
 import clsx from 'clsx';
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,7 +13,7 @@ import { RootState } from 'store/types';
 
 const drawerWidth = 240;
 
-const useStyles = makeStyles((theme: Theme) => createStyles({
+const useStyles = makeStyles((theme) => ({
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
     transition: theme.transitions.create(['width', 'margin'], {

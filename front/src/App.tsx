@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { CssBaseline } from '@material-ui/core';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import {
   Redirect,
   Route,
@@ -18,7 +18,7 @@ import 'utils/socket';
 
 import 'vendor';
 
-const useStyles = makeStyles((theme: Theme) => createStyles({
+const useStyles = makeStyles((theme) => ({
   root: { display: 'flex' },
   content: {
     flexGrow: 1,

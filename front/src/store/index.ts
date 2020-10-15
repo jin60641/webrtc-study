@@ -1,7 +1,6 @@
 import {
   applyMiddleware, compose, createStore, Store,
 } from 'redux';
-import { createLogger } from 'redux-logger';
 import { createEpicMiddleware } from 'redux-observable';
 import { persistStore } from 'redux-persist';
 
@@ -23,15 +22,10 @@ const persistHandler = (store: Store<RootState>) => () => {
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-const loggerMiddleware = createLogger();
 const epicMiddleware = createEpicMiddleware<RootAction, RootAction, RootState>();
 
 
 const middlewares: any[] = [epicMiddleware];
-
-if (process.env.NODE_ENV === 'development') {
-  // middlewares.push(loggerMiddleware);
-}
 
 const store = createStore(
   rootReducer,

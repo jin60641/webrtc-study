@@ -1,12 +1,12 @@
 import React from 'react';
 
-import { createStyles, makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 
 import routes from 'constants/routes';
 import useSignedIn from 'hooks/useSignedIn';
 
-const useStyles = makeStyles(() => createStyles({ main: {} }));
+const useStyles = makeStyles({ main: {} });
 
 const Main: React.FC = () => {
   const signedIn = useSignedIn();

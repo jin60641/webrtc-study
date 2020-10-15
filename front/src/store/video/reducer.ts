@@ -35,7 +35,6 @@ const videoReducer = createReducer(initialState)
       isConnected: false,
       isICEReady: false,
     };
-    const hasConnection = peer?.connection;
     return {
       ...state,
       peers: {

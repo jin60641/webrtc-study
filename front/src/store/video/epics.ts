@@ -15,7 +15,7 @@ import actions from './actions';
 
 export const receiveMessageEpic: Epic = (action$, state$) => action$.pipe(
   filter(isActionOf(actions.receiveMessage)),
-  filter(({ payload }) => state$.value.video.peers[payload.connectionId]?.messages?.length == 1),
+  filter(({ payload }) => state$.value.video.peers[payload.connectionId]?.messages?.length === 1),
   mergeMap(({ payload }) => [actions.processMessage.request(payload.connectionId)]),
 );
 

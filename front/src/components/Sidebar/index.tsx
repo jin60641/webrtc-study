@@ -3,9 +3,7 @@ import React from 'react';
 import {
   Divider, Drawer, IconButton, List, ListItem, ListItemIcon, ListItemText,
 } from '@material-ui/core';
-import {
-  createStyles, makeStyles, Theme, useTheme,
-} from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {
   ChevronLeft, ChevronRight, PeopleAlt, Settings,
 } from '@material-ui/icons';
@@ -25,7 +23,7 @@ const list = [{
 }];
 
 
-const useStyles = makeStyles((theme: Theme) => createStyles({
+const useStyles = makeStyles((theme) => ({
   toolbar: {
     display: 'flex',
     alignItems: 'center',

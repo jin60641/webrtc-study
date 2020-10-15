@@ -8,11 +8,11 @@ import React, {
   useState,
 } from 'react';
 
-import { createStyles, makeStyles } from '@material-ui/core/styles';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { Paper } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import { shallowEqual, useSelector } from 'react-redux';
 
 import { RootState } from 'store/types';
-import actions from 'store/video/actions';
 import { Candidate } from 'store/video/types';
 import { sendMessage } from 'utils/socket';
 import { formatDescription } from 'utils/webrtc';
@@ -22,17 +22,15 @@ interface PeerViewProps {
   connectionId: string;
 }
 
-const useStyles = makeStyles(() => createStyles({
+const useStyles = makeStyles({
   peerVideoWrapper: {
-    display: 'flex',
+    display: 'inline-flex',
     justifyContent: 'center',
-
-    // 16:9
-    height: '360px',
-    width: '270px',
+    width: 360,
+    height: 270,
   },
-  peerVideo: { width: '360px' },
-}));
+  peerVideo: { width: 360 },
+});
 
 const selector = (connectionId: string) => ({
   video: {
@@ -62,7 +60,6 @@ const PeerView: FC<PeerViewProps> = ({
   } = useSelector(peerSelector, shallowEqual);
   const [hasInit, setHasInit] = useState(false);
   const [candidates, setCandidates] = useState<Candidate[]>([]);
-  const dispatch = useDispatch();
   const classes = useStyles();
   const peerVidRef = useRef<HTMLVideoElement>(null);
 
@@ -116,19 +113,18 @@ const PeerView: FC<PeerViewProps> = ({
             sendMessage(desc, connectionId);
           });
       }
-
     }
-  }, [vidRef, hasInit, isReady, isSocketReady, isOffered, connection]);
+  }, [vidRef, hasInit, isReady, isSocketReady, isOffered, connection, connectionId]);
 
   useEffect(() => {
     if (isICEReady && !!candidates.length) {
-      candidates.map(candidate => sendMessage(candidate, connectionId));
+      candidates.map((candidate) => sendMessage(candidate, connectionId));
       setCandidates([]);
     }
   }, [isICEReady, candidates, connectionId]);
 
   return (
-    <div className={classes.peerVideoWrapper}>
+    <Paper className={classes.peerVideoWrapper}>
       <video
         onClick={handleClickVideo}
         autoPlay
@@ -137,7 +133,7 @@ const PeerView: FC<PeerViewProps> = ({
         className={classes.peerVideo}
         ref={peerVidRef}
       />
-    </div>
+    </Paper>
   );
 };
 

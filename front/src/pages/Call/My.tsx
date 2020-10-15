@@ -3,7 +3,7 @@ import React, {
 } from 'react';
 
 import { Paper } from '@material-ui/core';
-import { createStyles, makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { RootState } from 'store/types';
@@ -32,15 +32,15 @@ const constraints = {
   },
 };
 
-const useStyles = makeStyles(() => createStyles({
+const useStyles = makeStyles({
   peerVideoWrapper: {
-    display: 'flex',
+    display: 'inline-flex',
     justifyContent: 'center',
-    height: '270px',
-    width: '360px',
+    width: 360,
+    height: 270,
   },
-  video: { width: '360px' },
-}));
+  video: { width: 360 },
+});
 
 const My: FC<Props> = ({ vidRef }) => {
   const {
