@@ -1,8 +1,9 @@
-import db from './models';
 import socketio from 'socket.io';
 import {
   Server,
 } from 'http';
+
+import db from './models';
 
 // eslint-disable-next-line import/no-mutable-exports
 export let io: ReturnType<typeof socketio>;

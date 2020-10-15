@@ -3,8 +3,8 @@ import {
 } from '../websocket';
 
 interface Message {
-  type: string,
-  payload: any,
+  type: string;
+  payload: any;
 }
 
 export const sendMessage = (id: string, message: Message) => {

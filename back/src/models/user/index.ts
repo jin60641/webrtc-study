@@ -10,7 +10,7 @@ import {
   LocalRegisterPayload,
 } from './types';
 
-const uniqueValidator = require('mongoose-unique-validator');
+import uniqueValidator from 'mongoose-unique-validator';
 
 const UserSchema: Schema<UserDocument> = new mongoose.Schema({
   email: {

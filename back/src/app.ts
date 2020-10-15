@@ -9,6 +9,7 @@ import router from 'api/router';
 import logger from 'middleware/logger';
 import locale from 'middleware/locale';
 import jwt from 'middleware/jwt';
+
 import websocket from './websocket';
 
 dotenv.config({
