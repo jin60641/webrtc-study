@@ -9,6 +9,7 @@ import {
 } from './types';
 
 const disconnectPeer = createAction(Actions.DISCONNECT_PEER)<string>();
+const connectPeer = createAction(Actions.CONNECT_PEER)<string>();
 const setIsReady = createAction(Actions.SET_IS_READY)<Boolean>();
 const setIsSocketReady = createAction(Actions.SET_IS_SOCKET_READY)<Boolean>();
 const setConnection = createAction(Actions.SET_CONNECTION)<{
@@ -28,6 +29,7 @@ undefined,
 string
 >();
 
+
 export default {
   setIsReady,
   setIsSocketReady,
@@ -35,4 +37,5 @@ export default {
   receiveMessage,
   processMessage,
   disconnectPeer,
+  connectPeer,
 };

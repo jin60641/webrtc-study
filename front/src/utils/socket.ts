@@ -13,7 +13,6 @@ const connectStore = (initedStore: Store) => {
   }
 };
 
-
 const socket = socketio.connect(process.env.REACT_APP_SOCKET_HOST as string);
 
 socket.on('connect', () => {
@@ -29,11 +28,16 @@ socket.on('message', (action: any) => {
   }
 });
 
-export const sendMessage = (body: any) => {
+export const sendMessage = (body: any, to?: string) => {
   socket.emit('message', {
     type: 'message',
     body,
+    to,
   });
 };
 
-export default { connectStore };
+export const init = (token: string) => {
+  socket.emit('init', token);
+}
+
+export default { connectStore, init };

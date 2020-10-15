@@ -28,7 +28,6 @@
     "@types/koa__cors": "^3.0.1",
     "@types/mailgun-js": "^0.22.11",
     "@types/mongoose": "^5.7.1",
-    "@types/mongoose-unique-validator": "^1.0.4",
     "@types/node": "^12.12.12",
     "@types/socket.io": "^2.1.11",
     "babel-loader": "^8.0.6",
@@ -45,7 +44,6 @@
     "koa-static": "^5.0.0",
     "mailgun-js": "^0.22.0",
     "mongoose": "^5.9.1",
-    "mongoose-unique-validator": "^2.0.3",
     "socket.io": "^2.3.0",
     "webpack": "^4.41.2",
     "webpack-node-externals": "^1.7.2"

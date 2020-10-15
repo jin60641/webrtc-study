@@ -15,7 +15,7 @@ const Main: React.FC = () => {
   return (
     <div className={classes.main}>
       {routes
-        .filter(({ RouteComponent }) => signedIn !== !!RouteComponent)
+        .filter(({ RouteComponent }) => signedIn === !!RouteComponent)
         .map(({ key }) => (
           <Link
             key={`main-link-${key}`}

@@ -20,17 +20,6 @@ const videoReducer = createReducer(initialState)
       peers: nextPeers,
     };
   })
-  .handleAction(videoActions.setConnection, (state, action) => ({
-    ...state,
-    peers: {
-      ...state.peers,
-      [action.payload.connectionId]: {
-        connection: action.payload.connection,
-        messages: [],
-        isICEReady: false,
-      },
-    },
-  }))
   .handleAction(videoActions.receiveMessage, ({
     peers,
     ...state
@@ -40,7 +29,13 @@ const videoReducer = createReducer(initialState)
       body: message,
     },
   }) => {
-    const peer = peers[connectionId];
+    const peer = peers[connectionId] || {
+      connection: new RTCPeerConnection(),
+      isOffered: message.type === 'offer',
+      isConnected: false,
+      isICEReady: false,
+    };
+    const hasConnection = peer?.connection;
     return {
       ...state,
       peers: {
@@ -48,6 +43,22 @@ const videoReducer = createReducer(initialState)
         [connectionId]: {
           ...peer,
           messages: message.type ? [...(peer?.messages || []), message] : [],
+        },
+      },
+    };
+  })
+  .handleAction(videoActions.connectPeer, ({
+    peers,
+    ...state
+  }, { payload: connectionId }) => {
+    const peer = peers[connectionId];
+    return {
+      ...state,
+      peers: {
+        ...peers,
+        [connectionId]: {
+          ...peer,
+          isConnected: true,
         },
       },
     };

@@ -24,7 +24,9 @@ export const initialState: VideoState = {
 interface Peers {
   [connectionId: string]: {
     connection: Connection,
+    isConnected: boolean;
     messages: any[],
+    isOffered: boolean,
     isICEReady: boolean;
   }
 }
@@ -35,6 +37,7 @@ export enum Actions {
   SET_CONNECTION = 'SET_CONNECTION',
   RECEIVE_MESSAGE = 'RECEIVE_MESSAGE',
   DISCONNECT_PEER = 'DISCONNECT_PEER',
+  CONNECT_PEER = 'CONNECT_PEER',
 
   PROCESS_MESSAGE_REQUEST = 'PROCESS_MESSAGE#REQUEST',
   PROCESS_MESSAGE_SUCCESS = 'PROCESS_MESSAGE#SUCCESS',

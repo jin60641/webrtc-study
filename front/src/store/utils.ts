@@ -28,7 +28,7 @@ export const setHeader = (name: string, value: string) => {
 
 export const handleSignIn = (token: string) => {
   setHeader('authorization', `Bearer ${token}`);
-  // socket.init(token);
+  socket.init(token);
 };
 
 export const createAsyncEpic = (

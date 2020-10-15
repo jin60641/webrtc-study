@@ -3,6 +3,9 @@ import {
   Server,
 } from 'http';
 
+import {
+  decodeJWT,
+} from './utils/jwt';
 import db from './models';
 
 // eslint-disable-next-line import/no-mutable-exports
@@ -12,16 +15,42 @@ const init = (server: Server) => {
   io = socketio(server);
 
   io.on('connection', async (socket) => {
-    await db.Session.create({ connectionId: socket.id });
-    socket.on('message', (payload) => {
-      socket.broadcast.emit('message', {
-        type: 'RECEIVE_MESSAGE',
-        payload: {
-          connectionId: socket.id,
-          ...payload,
-        },
-      });
+    socket.on('init', (token) => {
+      if (token) {
+        const user = decodeJWT(token);
+        if (user?._id) {
+          db.Session.findOneAndUpdate({
+            userId: user._id,
+          }, {
+            connectionId: socket.id,
+          }, {
+            new: true,
+            upsert: true,
+          }).exec();
+        }
+      }
     });
+
+    socket.on('message', ({ to, ...payload }) => {
+      if (to) {
+        io.to(to).emit('message', {
+          type: 'RECEIVE_MESSAGE',
+          payload: {
+            connectionId: socket.id,
+            ...payload,
+          },
+        });
+      } else {
+        socket.broadcast.emit('message', {
+          type: 'RECEIVE_MESSAGE',
+          payload: {
+            connectionId: socket.id,
+            ...payload,
+          },
+        });
+      }
+    });
+
     socket.on('disconnect', () => {
       const session = db.Session.findOne({
         connectionId: socket.id,

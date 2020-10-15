@@ -10,7 +10,6 @@ import {
   LocalRegisterPayload,
 } from './types';
 
-import uniqueValidator from 'mongoose-unique-validator';
 
 const UserSchema: Schema<UserDocument> = new mongoose.Schema({
   email: {
@@ -31,10 +30,6 @@ const UserSchema: Schema<UserDocument> = new mongoose.Schema({
   salt: String,
 }, {
   timestamps: true,
-});
-
-UserSchema.plugin(uniqueValidator, {
-  message: 'is already taken.',
 });
 
 UserSchema.methods.setPassword = function setPassword(password) {
@@ -58,11 +53,16 @@ UserSchema.methods.generateToken = async function generateToken() {
   return token;
 };
 
-UserSchema.statics.localRegister = function localRegister({
+UserSchema.statics.localRegister = async function localRegister({
   email,
   name,
   password,
 }: LocalRegisterPayload) {
+  const already = await this.findOne({ email });
+  if (already) {
+    throw new Error(`${email} is already taken`);
+    return;
+  }
   const user = new this({
     email,
     name,

@@ -11,7 +11,7 @@ const persistConfig = {
   whitelist: ['drawer'],
 };
 
-const alertReducer = createReducer(initialState)
+const layoutReducer = createReducer(initialState)
   .handleAction(layoutActions.makeAlert, (state, action) => ({
     ...state,
     alert: action.payload,
@@ -25,4 +25,4 @@ const alertReducer = createReducer(initialState)
     alert: { ...initialState.alert },
   }));
 
-export default persistReducer(persistConfig, alertReducer);
+export default persistReducer(persistConfig, layoutReducer);

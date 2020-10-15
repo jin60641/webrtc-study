@@ -38,12 +38,14 @@ const selector = (connectionId: string) => ({
   video: {
     isReady,
     isSocketReady,
-    peers: { [connectionId]: { isICEReady } },
+    peers: { [connectionId]: { isICEReady, isOffered, connection } },
   },
 }: RootState) => ({
+  connection,
   isReady,
   isSocketReady,
   isICEReady,
+  isOffered,
 });
 
 const PeerView: FC<PeerViewProps> = ({
@@ -55,7 +57,10 @@ const PeerView: FC<PeerViewProps> = ({
     isReady,
     isSocketReady,
     isICEReady,
+    isOffered,
+    connection,
   } = useSelector(peerSelector, shallowEqual);
+  const [hasInit, setHasInit] = useState(false);
   const [candidates, setCandidates] = useState<Candidate[]>([]);
   const dispatch = useDispatch();
   const classes = useStyles();
@@ -94,36 +99,33 @@ const PeerView: FC<PeerViewProps> = ({
 
   useEffect(() => {
     const localStream = vidRef.current?.srcObject as MediaStream;
-
-    if (isReady && isSocketReady) {
-      const connection = new RTCPeerConnection();
+    if (isReady && isSocketReady && !hasInit) {
+      setHasInit(true);
       connection.ontrack = handleTrack;
       connection.onicecandidate = handleICECandidate;
       localStream?.getTracks().forEach((track) => {
         connection.addTrack(track);
       });
 
-      connection
-        .createOffer({ offerToReceiveVideo: true, offerToReceiveAudio: true })
-        .then((sessionDescription) => {
-          const desc = formatDescription(sessionDescription);
-          connection.setLocalDescription(desc);
-          sendMessage(desc);
-        });
+      if (!isOffered) {
+        connection
+          .createOffer({ offerToReceiveVideo: true, offerToReceiveAudio: true })
+          .then((sessionDescription) => {
+            const desc = formatDescription(sessionDescription);
+            connection.setLocalDescription(desc);
+            sendMessage(desc, connectionId);
+          });
+      }
 
-      dispatch(actions.setConnection({
-        connectionId,
-        connection,
-      }));
     }
-  }, [vidRef, dispatch, isReady, isSocketReady, connectionId]);
+  }, [vidRef, hasInit, isReady, isSocketReady, isOffered, connection]);
 
   useEffect(() => {
     if (isICEReady && !!candidates.length) {
-      candidates.map(sendMessage);
+      candidates.map(candidate => sendMessage(candidate, connectionId));
       setCandidates([]);
     }
-  }, [isICEReady, candidates]);
+  }, [isICEReady, candidates, connectionId]);
 
   return (
     <div className={classes.peerVideoWrapper}>

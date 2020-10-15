@@ -30,7 +30,7 @@ const epicMiddleware = createEpicMiddleware<RootAction, RootAction, RootState>()
 const middlewares: any[] = [epicMiddleware];
 
 if (process.env.NODE_ENV === 'development') {
-  middlewares.push(loggerMiddleware);
+  // middlewares.push(loggerMiddleware);
 }
 
 const store = createStore(
